@@ -1,0 +1,43 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "flow": "flow",
+    "eslint": "eslint",
+    "eslint:watch": "esw -w --cache ./",
+    "eslint:fix": "eslint --fix ./",
+    "build": "rimraf ./build && babel ./ --out-dir build --copy-files --ignore node_modules",
+    "start": "cross-env NODE_ENV=localhost nodemon src/main.js --exec babel-node"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.18.2",
+    "cross-env": "^5.0.5",
+    "deasync": "^0.1.10",
+    "express": "^4.15.5",
+    "express-validator": "^4.2.1",
+    "express-winston": "^2.4.0",
+    "fibers": "^2.0.0",
+    "ioredis": "^3.1.4",
+    "mongodb": "^2.2.31",
+    "node-config-env-value": "^1.0.0",
+    "winston": "^2.3.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-flow": "^6.23.0",
+    "babel-register": "^6.26.0",
+    "eslint-config-airbnb-base": "^12.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-watch": "^3.1.2",
+    "flow-bin": "^0.55.0",
+    "rimraf": "^2.6.2"
+  }
+}

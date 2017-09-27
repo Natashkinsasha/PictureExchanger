@@ -1,0 +1,7 @@
+{
+  "port": 3000,
+  "level": "info",
+  "mongodb": {
+    "url": "mongodb://admin:12345@ds151070.mlab.com:51070/garage"
+  }
+}
