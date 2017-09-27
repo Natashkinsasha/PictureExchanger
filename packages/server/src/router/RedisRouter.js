@@ -12,7 +12,7 @@ export default class RedisRouter extends Router {
       .delete('/remove', (req, res, next) => {
         const key = req.query.id;
         return this.redisController
-          .remove({key})
+          .remove({ key })
           .then(() => res.status(200).end())
           .catch(next);
       });

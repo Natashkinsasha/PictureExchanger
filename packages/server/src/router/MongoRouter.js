@@ -10,7 +10,7 @@ export default class MongoRouter extends Router {
         .then(() => res.status(200).end())
         .catch(next))
       .delete('/remove', (req, res, next) => {
-        const id = req.query.id;
+        const { id } = req.query;
         return this.mongoController
           .remove(id)
           .then(() => res.status(200).end())
