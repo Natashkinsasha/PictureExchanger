@@ -23,6 +23,7 @@
     "express-winston": "^2.4.0",
     "fibers": "^2.0.0",
     "ioredis": "^3.1.4",
+    "jwt-redis": "^0.1.4",
     "mongodb": "^2.2.31",
     "node-config-env-value": "^1.0.0",
     "winston": "^2.3.1"

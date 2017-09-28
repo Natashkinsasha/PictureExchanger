@@ -5,11 +5,17 @@ export default class MongoController{
         this.mongoService = mongoService;
     }
 
-    clear = () => {
-        return this.mongoService.clear();
+    clear = (req, res, next) => {
+        return this.mongoService.clear()
+            .then(() => res.status(200).end())
+            .catch(next)
     };
 
-    remove = ({id}) => {
-        return this.mongoService.remove({id});
+    remove = (req, res, next) => {
+        const { id } = req.query;
+        return this.mongoService
+            .remove({id, collection})
+            .then(() => res.status(200).end())
+            .catch(next);
     };
 }

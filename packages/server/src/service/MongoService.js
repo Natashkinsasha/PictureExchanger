@@ -8,7 +8,7 @@ export default class MongoService{
         return this.mongoDao.clear();
     };
 
-    remove = ({id}) => {
-        return this.mongoDao.remove({id});
+    remove = ({id, collection}) => {
+        return this.mongoDao.remove({id, collection});
     };
 }
