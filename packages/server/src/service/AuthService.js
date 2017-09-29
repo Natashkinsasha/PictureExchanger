@@ -1,8 +1,8 @@
-import crypto from 'crypto';
-
 import RegistryUserDTO from '../dto/RegistryUserDTO';
 import JWTUserDTO from '../dto/JWTUserDTO';
 import AuthenticationError from '../error/AuthenticationError';
+import passwordHash from '../lib/password-hash';
+import validator from 'validator';
 
 export default class AuthService {
 
@@ -27,25 +27,22 @@ export default class AuthService {
             })
     };
 
-    login = ({nickname, email, password}) => {
+    login = ({nicknameOrEmail, password}) => {
         return Promise
-            .resolve((nickname) => {
-                if (nickname) {
-                    return this.userDao.findByNickname({nickname});
+            .resolve((nicknameOrEmail) => {
+                if (validator.isEmail(nicknameOrEmail)) {
+                    return this.userDao.findByEmail({email: nicknameOrEmail});
                 }
-                return this.userDao.findByEmail({email});
+                return this.userDao.findByNickname({nickname: nicknameOrEmail});
             })
             .then((user) => {
-                if(!user){
-                    if(nickname){
-                        throw new AuthenticationError({message:'Invalid nickname'});
-                    }
-                    throw new AuthenticationError({message:'Invalid email'});
+                if (!user) {
+                    throw new AuthenticationError({message: 'Invalid nickname or email'});
                 }
-                return validatePassword({password, salt: user.salt, passwordHash: user.passwordHash.})
+                return passwordHash.validate(password, user.salt, user.passwordHash)
             })
-            .then((isValidate)=>{
-                if (isValidate){
+            .then((isValidate) => {
+                if (isValidate) {
                     return this.jwtService
                         .create(new JWTUserDTO(user))
                         .then(({accessToken, refreshToken}) => {
@@ -56,18 +53,15 @@ export default class AuthService {
                             }
                         })
                 }
-                throw new AuthenticationError({message:'Invalid password'});
+                throw new AuthenticationError({message: 'Invalid password'});
 
             });
     };
 
 
     logout = ({token}) => {
-        return this.jwtService.break({token});
+        return this.jwtService.destroy({token});
     }
 
 }
 
-function validatePassword({password, salt, passwordHash}) {
-    return crypto.pbkdf2Sync(password, salt, 1, 128, 'sha1') === passwordHash;
-}

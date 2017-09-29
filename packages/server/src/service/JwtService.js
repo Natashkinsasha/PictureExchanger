@@ -9,18 +9,18 @@ export default class JwtService {
         this.secretJWTKey = config.get('jwt.secret');
     }
 
-    create = ({id, nickname, email}) => {
+    create = (user) => {
         return Promise
             .props({
                 accessToken: this.jwtRedis
-                    .signAsync({id, nickname, email, type: 'access'}, this.secretJWTKey),
+                    .signAsync({...user, type: 'access'}, this.secretJWTKey),
                 refreshToken: this.jwtRedis
-                    .signAsync({id, nickname, email, type: 'refresh'}, this.secretJWTKey)
+                    .signAsync({...user, type: 'refresh'}, this.secretJWTKey)
             });
     };
 
-    break = ({token}) => {
+    destroy = ({token}) => {
         return this.jwtRedis.destroyAsync(token)
-    }
+    };
 
 }

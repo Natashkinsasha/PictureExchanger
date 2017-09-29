@@ -8,7 +8,8 @@
     "eslint:watch": "esw -w --cache ./",
     "eslint:fix": "eslint --fix ./",
     "build": "rimraf ./build && babel ./ --out-dir build --copy-files --ignore node_modules",
-    "start": "cross-env NODE_ENV=localhost nodemon src/main.js --exec babel-node"
+    "start": "cross-env NODE_ENV=localhost nodemon src/main.js --exec babel-node",
+    "test": "cross-env NODE_ENV=test mocha 'tests/**/*.js' --compilers js:babel-register --timeout 25000"
   },
   "author": "",
   "license": "ISC",
@@ -26,6 +27,7 @@
     "jwt-redis": "^0.1.4",
     "mongodb": "^2.2.31",
     "node-config-env-value": "^1.0.0",
+    "shortid": "^2.2.8",
     "winston": "^2.3.1"
   },
   "devDependencies": {
@@ -35,10 +37,14 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-flow": "^6.23.0",
     "babel-register": "^6.26.0",
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
+    "dirty-chai": "^2.0.1",
     "eslint-config-airbnb-base": "^12.0.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-watch": "^3.1.2",
     "flow-bin": "^0.55.0",
+    "mocha": "^3.5.3",
     "rimraf": "^2.6.2"
   }
 }

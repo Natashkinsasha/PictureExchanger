@@ -20,9 +20,9 @@ export default class AuthController {
     };
 
     login = (req, res, next) => {
-        const {nickname, email, password} = req.body;
+        const {nicknameOrEmail, password} = req.body;
         return this.authService
-            .login({nickname, email, password})
+            .login({nicknameOrEmail, password})
             .then(({user, accessToken, refreshToken}) => {
                 return res.status(200)
                     .json({
