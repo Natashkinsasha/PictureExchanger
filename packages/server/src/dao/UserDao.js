@@ -1,19 +1,32 @@
+import UserDTO from '../dto/UserDTO';
 
-export default class UserDAO{
+export default class UserDAO {
 
-    constructor({db}){
+    constructor({db}) {
         this.db = db;
     }
 
     create = (user) => {
-        return db.collection('user').insertOne(user)
+        return this.db.collection('users')
+            .insertOne(user)
+            .then(() => {
+                return new UserDTO(user);
+            })
     };
 
-    findByEmail = ({email}) =>{
-        return db.collection('user').findOne({email});
+    findByEmail = ({email}) => {
+        return this.db.collection('users', {promoteBuffers: true})
+            .findOne({email})
+            .then((user) => {
+                return new UserDTO(user);
+            });
     };
 
-    findByNickname = ({nickname}) =>{
-        return db.collection('user').findOne({nickname});
+    findByNickname = ({nickname}) => {
+        return this.db.collection('users', {promoteBuffers: true})
+            .findOne({nickname})
+            .then((user) => {
+                return new UserDTO(user);
+            });
     };
 }

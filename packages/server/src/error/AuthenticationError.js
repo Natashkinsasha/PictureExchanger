@@ -1,5 +1,5 @@
 import LogicError from './LogicError';
-import errorCode from './errorCode';
+import errorCode from './errorCodes';
 
 export default class AuthenticationError extends LogicError{
 

@@ -35,7 +35,23 @@ export default class AuthController {
     };
 
     logout = (req, res, next) => {
+        const token = req.headers['authorization'];
+        return this.authService
+            .logout({token})
+            .then(() => {
+                return res.status(204).end();
+            })
+            .catch(next)
+    };
 
+    getAccessToken = (req, res, next) => {
+        const refreshToken = req.body.refreshToken;
+        return this.authService
+            .getAccessToken({refreshToken})
+            .then(({accessToken, refreshToken, user}) => {
+                return res.status(200).json({accessToken, refreshToken, user});
+            })
+            .catch(next)
     };
 
 }

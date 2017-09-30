@@ -8,7 +8,7 @@
     "eslint:watch": "esw -w --cache ./",
     "eslint:fix": "eslint --fix ./",
     "build": "rimraf ./build && babel ./ --out-dir build --copy-files --ignore node_modules",
-    "start": "cross-env NODE_ENV=localhost nodemon src/main.js --exec babel-node",
+    "start": "cross-env NODE_ENV=localhost nodemon src/main.js --ignore tests/ --exec babel-node",
     "test": "cross-env NODE_ENV=test mocha 'tests/**/*.js' --compilers js:babel-register --timeout 25000"
   },
   "author": "",
@@ -24,10 +24,14 @@
     "express-winston": "^2.4.0",
     "fibers": "^2.0.0",
     "ioredis": "^3.1.4",
-    "jwt-redis": "^0.1.4",
+    "jsonwebtoken": "^8.0.1",
+    "jwt-redis": "^1.2.1",
     "mongodb": "^2.2.31",
     "node-config-env-value": "^1.0.0",
+    "passport": "^0.4.0",
+    "passport-jwtr": "^1.2.1",
     "shortid": "^2.2.8",
+    "validator": "^9.0.0",
     "winston": "^2.3.1"
   },
   "devDependencies": {

@@ -1,3 +1,4 @@
+import Promise from 'bluebird';
 import crypto from 'crypto';
 
 export default {
@@ -7,6 +8,6 @@ export default {
         return {passwordHash, salt};
     },
     validate: (password, salt, passwordHash)=>{
-        return crypto.pbkdf2Sync(password, salt, 1, 128, 'sha1') === passwordHash;
+        return crypto.pbkdf2Sync(password, salt, 1, 128, 'sha1').equals(passwordHash);
     },
 }

@@ -6,13 +6,14 @@ export default class MongoController{
     }
 
     clear = (req, res, next) => {
-        return this.mongoService.clear()
+        const { collection } = req.query;
+        return this.mongoService.clear({collection})
             .then(() => res.status(200).end())
             .catch(next)
     };
 
     remove = (req, res, next) => {
-        const { id } = req.query;
+        const { id, collection } = req.query;
         return this.mongoService
             .remove({id, collection})
             .then(() => res.status(200).end())

@@ -1,4 +1,4 @@
-import errorCode from './errorCode';
+import errorCode from './errorCodes';
 
 export default class LogicError extends Error {
   constructor({ message = 'Logic error', code = errorCode.LOGIC_ERROR }) {

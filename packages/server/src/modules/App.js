@@ -6,13 +6,14 @@ import errorHandler from '../middleware/errorHandler';
 import validator from '../middleware/validator';
 
 export default class App {
-  constructor({ basicRouter }) {
-    const app = express();
-    app.use(logger());
-    app.use(bodyParser.json());
-    app.use(validator());
-    app.use('/api', basicRouter);
-    app.use(errorHandler());
-    return app;
-  }
+    constructor({basicRouter, passport}) {
+        const app = express();
+        app.use(logger());
+        app.use(bodyParser.json());
+        app.use(passport.initialize());
+        app.use(validator());
+        app.use('/api', basicRouter);
+        app.use(errorHandler());
+        return app;
+    }
 }

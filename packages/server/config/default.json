@@ -2,6 +2,9 @@
   "port": 3000,
   "level": "info",
   "jwt": {
-    "secret": "secret"
+    "secret": "secret",
+    "header": "authorization",
+    "access_expires": "1h",
+    "refresh_expires": "24h"
   }
 }

@@ -1,8 +1,12 @@
+import Promise from 'bluebird';
+
 import RegistryUserDTO from '../dto/RegistryUserDTO';
 import JWTUserDTO from '../dto/JWTUserDTO';
 import AuthenticationError from '../error/AuthenticationError';
 import passwordHash from '../lib/password-hash';
 import validator from 'validator';
+import errorCodes from "../error/errorCodes";
+import ClientUserDTO from "../dto/ClientUserDTO";
 
 export default class AuthService {
 
@@ -19,7 +23,7 @@ export default class AuthService {
                     .create(new JWTUserDTO(user))
                     .then(({accessToken, refreshToken}) => {
                         return {
-                            user,
+                            user: new ClientUserDTO(user),
                             accessToken,
                             refreshToken,
                         }
@@ -29,7 +33,8 @@ export default class AuthService {
 
     login = ({nicknameOrEmail, password}) => {
         return Promise
-            .resolve((nicknameOrEmail) => {
+            .resolve()
+            .then(() => {
                 if (validator.isEmail(nicknameOrEmail)) {
                     return this.userDao.findByEmail({email: nicknameOrEmail});
                 }
@@ -39,21 +44,22 @@ export default class AuthService {
                 if (!user) {
                     throw new AuthenticationError({message: 'Invalid nickname or email'});
                 }
-                return passwordHash.validate(password, user.salt, user.passwordHash)
+                return Promise.resolve([passwordHash.validate(password, user.salt, user.passwordHash), user]);
+
             })
-            .then((isValidate) => {
+            .spread((isValidate, user) => {
                 if (isValidate) {
                     return this.jwtService
                         .create(new JWTUserDTO(user))
                         .then(({accessToken, refreshToken}) => {
                             return {
-                                user,
+                                user: new ClientUserDTO(user),
                                 accessToken,
                                 refreshToken,
                             }
-                        })
+                        });
                 }
-                throw new AuthenticationError({message: 'Invalid password'});
+                throw new AuthenticationError({message: 'Invalid password', code: errorCodes.INVALID_PASSWORD});
 
             });
     };
@@ -61,7 +67,26 @@ export default class AuthService {
 
     logout = ({token}) => {
         return this.jwtService.destroy({token});
-    }
+    };
+
+    getAccessToken = ({refreshToken}) => {
+        return this.jwtService
+            .validateRefreshToken({refreshToken})
+            .then(() => {
+                return this.jwtService.destroy({token: refreshToken});
+            })
+            .then((user) => {
+                return this.jwtService
+                    .create(new JWTUserDTO(user))
+                    .then(({accessToken, refreshToken}) => {
+                        return {
+                            user: new ClientUserDTO(user),
+                            accessToken,
+                            refreshToken,
+                        }
+                    });
+            })
+    };
 
 }
 

@@ -4,8 +4,8 @@ export default class MongoService{
         this.mongoDao = mongoDao;
     }
 
-    clear = () => {
-        return this.mongoDao.clear();
+    clear = ({collection}) => {
+        return this.mongoDao.clear({collection});
     };
 
     remove = ({id, collection}) => {

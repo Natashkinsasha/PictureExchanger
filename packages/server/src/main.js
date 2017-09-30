@@ -1,9 +1,13 @@
 import JwtRedis from 'jwt-redis';
+import Promise from 'bluebird';
 
 import MongoDB from './lib/MongoDb';
 import RedisClient from './lib/RedisClient';
 import App from './modules/App';
 import HttpServer from './modules/HttpServer';
+import logger from './lib/logger';
+
+import passportAuthenticate from './middleware/passportAuthenticate';
 
 import AuthRouter from './router/AuthRouter';
 import BasicRouter from './router/BasicRouter';
@@ -25,7 +29,7 @@ import RedisDao from './dao/RedisDao';
 import UserDao from './dao/UserDao';
 
 process.on('uncaughtException', (err) => {
-    log.error('Uncaught Exception', err.stack);
+    logger.error('Uncaught Exception', err.stack);
 });
 
 const redisClient = new RedisClient();
@@ -37,7 +41,8 @@ const redisDao = new RedisDao({redisClient});
 const userDao = new UserDao({db});
 //-------------------
 
-const jwtRedis = new JwtRedis({redisClient});
+const jwtRedis = Promise.promisifyAll(new JwtRedis(redisClient));
+const passport = passportAuthenticate({jwtRedis});
 
 //----service-------
 const jwtService = new JwtService({jwtRedis});
@@ -53,14 +58,15 @@ const redisController = new RedisController({redisService});
 //-------------------
 
 //------router-------
-const authRouter = new AuthRouter({authController});
+const authRouter = new AuthRouter({authController, passport});
 const infoRouter = new InfoRouter();
 const mongoRouter = new MongoRouter({mongoController});
 const redisRouter = new RedisRouter({redisController});
 const basicRouter = new BasicRouter({ authRouter, infoRouter, mongoRouter, redisRouter });
 //-------------------
 
-const app = new App({ basicRouter });
+
+const app = new App({ basicRouter, passport });
 const httpSever = new HttpServer(app);
 httpSever.start();
 
