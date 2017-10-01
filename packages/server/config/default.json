@@ -17,7 +17,7 @@
     "host": "redis-17767.c13.us-east-1-3.ec2.cloud.redislabs.com"
   },
   "server": {
-    "port": 3000,
+    "port": 3001,
     "critical_response_time": 500,
     "perf_logs": false,
     "log_level": "info",
