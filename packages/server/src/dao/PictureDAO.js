@@ -1,5 +1,8 @@
-import PictureDTO from '../dao/PictureDAO';
+import PictureDTO from '../dto/PictureDTO';
 
+
+//TODO Добавить индексы
+//TODO Добавить валидацию
 export default class PictureDAO {
 
     constructor({db}) {
@@ -22,16 +25,29 @@ export default class PictureDAO {
 
     };
 
-    find = ({onlyMy = false, sortBy = 'uploadDate', page = 1, count = 10}) => {
-
-    };
-
-    findByTags = ({onlyMy = false, sortBy = 'uploadDate', page = 1, count = 10, tags = []}) => {
-
-    };
-
-    findByName = ({onlyMy = false, sortBy = 'uploadDate', page = 1, count = 10, name = ''}) => {
-
+    find = ({owner, onlyMy = false, sortBy = 'uploadDate', page = 1, count = 10, tags, name}) => {
+        const limit = count;
+        const skip = count * (page - 1);
+        let query = {};
+        if (tags) {
+            query = {...query, tags: {$all: tags}};
+        }
+        if (name) {
+            //TODO добавить поиск по подстроке и без чуствительности к регистру
+            query = {...query, name};
+        }
+        if (onlyMy) {
+            query = {...query, owner: new mongodb.ObjectID(owner)}
+        }
+        return this.db.collection('pictures')
+            .find(query)
+            .sort({sortBy: 1})
+            .skip(skip)
+            .limit(limit)
+            .toArray()
+            .map((picture) => {
+                return new PictureDTO(picture);
+            });
     };
 
     getPopularTags = ({count}) => {

@@ -11,7 +11,7 @@ export default class HttpServer {
     }
 
     start = () => {
-        const port = config.get('port');
+        const port = config.get('server.port');
         let done = false;
         this.server.listen(port, () => {
             done = true;

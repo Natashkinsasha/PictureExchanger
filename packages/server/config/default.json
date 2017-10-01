@@ -1,6 +1,4 @@
 {
-  "port": 3000,
-  "level": "info",
   "jwt": {
     "secret": "secret",
     "header": "authorization",
@@ -18,5 +16,13 @@
     "port": 17767,
     "host": "redis-17767.c13.us-east-1-3.ec2.cloud.redislabs.com"
   },
-  "critical_response_time": 500
+  "server": {
+    "port": 3000,
+    "critical_response_time": 500,
+    "perf_logs": false,
+    "log_level": "info",
+    "roles": {
+      "client": "client"
+    }
+  }
 }

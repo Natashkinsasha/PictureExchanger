@@ -1,5 +1,8 @@
 import UserDTO from '../dto/UserDTO';
 
+
+//TODO Добавить индексы
+//TODO Добавить валидацию
 export default class UserDAO {
 
     constructor({db}) {

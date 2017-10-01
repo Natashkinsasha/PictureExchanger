@@ -12,7 +12,7 @@ const serverURL = `http://localhost:${3000}`;
 
 describe('Test auth API', () => {
 
-    after((done) => {
+    afterEach((done) => {
         Promise
             .all([
                 chai
@@ -30,7 +30,7 @@ describe('Test auth API', () => {
 
     });
 
-    describe('#POST /api/registry', () => {
+    describe('#POST /api/auth/registry', () => {
 
         it('should registry user with nickname, email and password', (done) => {
             const nickname = shortid.generate();
@@ -49,6 +49,8 @@ describe('Test auth API', () => {
                     expect(res.body.user).to.have.property('id').be.a('string');
                     expect(res.body.user).to.have.property('nickname', nickname).be.a('string');
                     expect(res.body.user).to.have.property('email', email).be.a('string');
+                    expect(res.body.user).to.have.property('roles').be.a('array');
+                    expect(res.body.user.roles).to.include('client');
                     done();
                 })
                 .catch(done)
@@ -57,7 +59,7 @@ describe('Test auth API', () => {
     });
 
 
-    describe('#POST /api/login', () => {
+    describe('#POST /api/auth/login', () => {
 
 
         it('should login user by him nickname and password', (done) => {
@@ -83,6 +85,8 @@ describe('Test auth API', () => {
                     expect(res.body.user).to.have.property('id').be.a('string');
                     expect(res.body.user).to.have.property('nickname', nickname).be.a('string');
                     expect(res.body.user).to.have.property('email', email).be.a('string');
+                    expect(res.body.user).to.have.property('roles').be.a('array');
+                    expect(res.body.user.roles).to.include('client');
                     done();
                 })
                 .catch(done)
@@ -112,6 +116,8 @@ describe('Test auth API', () => {
                     expect(res.body.user).to.have.property('id').be.a('string');
                     expect(res.body.user).to.have.property('nickname', nickname).be.a('string');
                     expect(res.body.user).to.have.property('email', email).be.a('string');
+                    expect(res.body.user).to.have.property('roles').be.a('array');
+                    expect(res.body.user.roles).to.include('client');
                     done();
                 })
                 .catch(done)
@@ -120,7 +126,7 @@ describe('Test auth API', () => {
     });
 
 
-    describe('#GET /api/logout', () => {
+    describe('#GET /api/auth/logout', () => {
 
         it('should registry user with nickname, email and password', (done) => {
             const nickname = shortid.generate();
@@ -145,7 +151,7 @@ describe('Test auth API', () => {
 
     });
 
-    describe('#POST /api/update', () => {
+    describe('#POST /api/auth/update', () => {
 
         it('should update user tokens', (done) => {
             const nickname = shortid.generate();
@@ -170,6 +176,8 @@ describe('Test auth API', () => {
                     expect(res.body.user).to.have.property('id').be.a('string');
                     expect(res.body.user).to.have.property('nickname', nickname).be.a('string');
                     expect(res.body.user).to.have.property('email', email).be.a('string');
+                    expect(res.body.user).to.have.property('roles').be.a('array');
+                    expect(res.body.user.roles).to.include('client');
                     done();
                 })
                 .catch(done)

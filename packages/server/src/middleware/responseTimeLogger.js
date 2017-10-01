@@ -3,7 +3,7 @@ import responseTime from 'response-time';
 
 import logger from '../lib/logger';
 
-const { critical_response_time } = config;
+const critical_response_time = config.get('server.critical_response_time');
 
 export default () => responseTime((req, res, time) => {
     if (time > critical_response_time) {

@@ -2,32 +2,27 @@ import NewPictureDTO from '../dto/NewPictureDTO';
 
 export default class PictureService {
 
-    constructor({pictureDAO, pictureStorageService}) {
-        this.pictureDAO = pictureDAO;
+    constructor({pictureDao, pictureStorageService}) {
+        this.pictureDao = pictureDao;
         this.pictureStorageService = pictureStorageService;
     }
 
-    save = ({pictureData, name, tags, description, isPrivate = true}) => {
+    save = ({pictureData, name, tags, description, isPrivate = true, owner}) => {
         return this.pictureStorageService.save({pictureData})
             .then((url) => {
-                return this.pictureDAO
-                    .create(new NewPictureDTO({name, tags, description, isPrivate, url}))
+                return this.pictureDao
+                    .create(new NewPictureDTO({name, tags, description, isPrivate, url, owner}))
             })
 
     };
 
-    find = ({name, onlyMy = false, tags, sortBy = 'uploadDate', page = 1, count = 10}) => {
-        if (name) {
-            return this.pictureDAO.findByName({name, sortBy, page, count, onlyMy});
-        } else if (tags) {
-            return this.pictureDAO.findByTags({tags, sortBy, page, count, onlyMy});
-        }
-        return this.pictureDAO.find({sortBy, page, count, onlyMy});
+    find = ({name, onlyMy = false, tags, sortBy = 'uploadDate', page = 1, count = 10, owner}) => {
+        return this.pictureDao.find({name, onlyMy, tags, sortBy, page, count, owner});
 
     };
 
     remove = ({id}) => {
-        return this.pictureDAO
+        return this.pictureDao
             .remove({id})
             .then((url) => {
                 return this.pictureStorageService.remove({url})
@@ -35,7 +30,7 @@ export default class PictureService {
     };
 
     getPopularTags = ({count}) => {
-        return this.pictureDAO.getPopularTags({count});
+        return this.pictureDao.getPopularTags({count});
     };
 
 }

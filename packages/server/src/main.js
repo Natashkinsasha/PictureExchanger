@@ -6,6 +6,7 @@ import RedisClient from './lib/RedisClient';
 import App from './modules/App';
 import HttpServer from './modules/HttpServer';
 import logger from './lib/logger';
+import perfLogger from './lib/perf-logger';
 
 import passportAuthenticate from './middleware/passportAuthenticate';
 
@@ -36,6 +37,8 @@ import UserDao from './dao/UserDao';
 process.on('uncaughtException', (err) => {
     logger.error('Uncaught Exception', err.stack);
 });
+
+perfLogger.start();
 
 const redisClient = new RedisClient();
 const db = new MongoDB();
@@ -70,7 +73,7 @@ const redisController = new RedisController({redisService});
 const authRouter = new AuthRouter({authController, passport});
 const infoRouter = new InfoRouter();
 const mongoRouter = new MongoRouter({mongoController});
-const pictureRouter = new PictureRouter({pictureController});
+const pictureRouter = new PictureRouter({pictureController, passport});
 const redisRouter = new RedisRouter({redisController});
 const basicRouter = new BasicRouter({ authRouter, infoRouter, mongoRouter, redisRouter, pictureRouter });
 //-------------------

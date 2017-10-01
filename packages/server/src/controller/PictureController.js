@@ -5,8 +5,9 @@ export default class PictureController {
     }
 
     save = (req, res, next) => {
-        const {pictureData, name, tags, description, isPrivate} = req.body;
-        return this.pictureService.save({pictureData, name, tags, description, isPrivate})
+        const {file: pictureData, name, tags, description, isPrivate} = req.body;
+        const owner = req.user.id;
+        return this.pictureService.save({pictureData, name, tags, description, isPrivate, owner})
             .then((picture) => {
                 return res.status(200).json(picture);
             })
@@ -14,7 +15,7 @@ export default class PictureController {
     };
 
     find = (req, res, next) => {
-        const {name, onlyMy, tags, sortBy, page, count} = req.body;
+        const {name, onlyMy, tags, sortBy, page, count} = req.query;
         return this.pictureService.find({name, onlyMy, tags, sortBy, page, count})
             .then((pictures) => {
                 return res.status(200).json(pictures);
