@@ -7,7 +7,7 @@
   },
   "backblaze": {
     "account_id": "a8fe61d20e41",
-    "application_key": "001d3624bfe67029723ae5e8c81c4469e4c1eb8993"
+    "application_key": "0013a11b9ec67d9ea7d36b06b03649fd165365ea83"
   },
   "mongodb": {
     "url": "mongodb://admin:12345@ds151070.mlab.com:51070/garage"
