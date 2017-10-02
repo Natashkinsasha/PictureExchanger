@@ -5,7 +5,7 @@ import PictureDTO from '../dto/PictureDTO';
 //TODO Добавить валидацию
 export default class PictureDAO {
 
-    constructor({db}) {
+    constructor({ db }) {
         this.db = db;
     }
 
@@ -17,31 +17,34 @@ export default class PictureDAO {
             })
     };
 
-    remove = ({id}) => {
-        return this.db.collection('pictures').deleteOne({_id: new mongodb.ObjectID(id)});
+    remove = ({ id }) => {
+        return this.db.collection('pictures').deleteOne({ _id: new mongodb.ObjectID(id) });
     };
 
     update = (picture) => {
 
     };
 
-    find = ({owner, onlyMy = false, sortBy = 'uploadDate', page = 1, count = 10, tags, name}) => {
+    find = ({ owner, onlyMy = false, sortBy = 'uploadDate', page = 1, count = 10, tags, name }) => {
         const limit = count;
         const skip = count * (page - 1);
         let query = {};
         if (tags) {
-            query = {...query, tags: {$all: tags}};
+            query = { ...query, tags: { $all: tags } };
         }
         if (name) {
             //TODO добавить поиск по подстроке и без чуствительности к регистру
-            query = {...query, name};
+            query = { ...query, name };
         }
         if (onlyMy) {
-            query = {...query, owner: new mongodb.ObjectID(owner)}
+            query = { ...query, owner: new mongodb.ObjectID(owner) }
+        }
+        if (!onlyMy) {
+            query = { ...query, $or: [{ owner: new mongodb.ObjectID(owner) }, { isPrivate: false }] }
         }
         return this.db.collection('pictures')
             .find(query)
-            .sort({sortBy: 1})
+            .sort({ sortBy: 1 })
             .skip(skip)
             .limit(limit)
             .toArray()
@@ -50,7 +53,7 @@ export default class PictureDAO {
             });
     };
 
-    getPopularTags = ({count}) => {
+    getPopularTags = ({ count }) => {
 
     };
 
