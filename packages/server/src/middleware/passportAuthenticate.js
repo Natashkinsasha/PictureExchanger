@@ -2,9 +2,13 @@ import passport from 'passport';
 import passportJWTR from 'passport-jwtr';
 import config from 'node-config-env-value';
 
-const {Strategy: JwtrStrategy, ExtractJwt} = passportJWTR;
+const { Strategy: JwtrStrategy, ExtractJwt } = passportJWTR;
 
-export default ({jwtRedis}) => {
+import AuthenticationError from '../error/AuthenticationError';
+import errorCodes from '../error/errorCodes';
+import JWTUserDTO from '../dto/JWTUserDTO';
+
+export default ({ jwtRedis }) => {
 
     const header = config.get('jwt.header');
     const opts = {
@@ -13,7 +17,12 @@ export default ({jwtRedis}) => {
         jwtr: jwtRedis,
     };
 
-    passport.use(new JwtrStrategy(opts));
+    passport.use(new JwtrStrategy(opts), (payload, done) => {
+        if (payload.type === 'access') {
+            return done(null, new JWTUserDTO(payload));
+        }
+        done(new AuthenticationError({ message: 'Token of wrong type', code: errorCodes.AUTHENTICATION_ERROR }));
+    });
 
     return passport;
 
