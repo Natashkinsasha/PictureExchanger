@@ -6,6 +6,6 @@ const Main = () => {
     return (
         <App/>
     );
-};
+}
 
 ReactDOM.render(<Main/>, document.getElementById('mount-point'));

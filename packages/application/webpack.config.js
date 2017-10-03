@@ -2,9 +2,8 @@ const path = require('path');
 const webpack = require('webpack');
 const config = require('node-config-env-value');
 
-const NODE_ENV = config.get('NODE_ENV');
 const port = config.get('server.port');
-
+const NODE_ENV = config.get('NODE_ENV');
 module.exports = {
 
     entry: path.join(__dirname, 'src/main.js'),
@@ -16,9 +15,9 @@ module.exports = {
     },
 
 
-    devtool: NODE_ENV==='development' ? 'source-map' : false,
+    devtool: NODE_ENV === 'development' ? 'source-map' : false,
 
-    plugins:[
+    plugins: [
         new webpack.NoEmitOnErrorsPlugin()
     ],
     module: {
@@ -49,7 +48,7 @@ module.exports = {
         port,
         proxy: {
             '/api/**': {
-                target: 'http://localhost:3001',
+                target: 'http://localhost:3000',
                 secure: false,
                 changeOrigin: true,
             },

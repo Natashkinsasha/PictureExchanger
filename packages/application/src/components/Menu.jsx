@@ -7,7 +7,7 @@ import {
     logout,
 } from '../actions/user';
 
-import {logout} from '../api/auth';
+import {test} from '../api/auth';
 
 
 const AppMenu = (props) => {
@@ -23,7 +23,7 @@ const DesktopMenu = ({size, ...props}) => {
     return (
         <div>
             <Menu>
-                <Menu.Item header>PicturesExchanger</Menu.Item>
+                <Menu.Item header>PictureExchanger</Menu.Item>
                 <AuthorizationPanel isAuthorized={props.isAuthorized} onLogin={props.login}
                                     onLogout={props.logout}
                                     onSingUp={props.singUp}

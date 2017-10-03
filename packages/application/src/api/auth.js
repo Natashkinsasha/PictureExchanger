@@ -2,19 +2,10 @@ import axios from 'axios'
 
 
 export function login(user){
-    return axios.post('api/auth/login', user);
+    return axios.post('/api/auth/login', user);
 }
 
 export function singUp(user){
-    return axios.post('api/auth/registry', user);
+    return axios.post('/api/auth/register', user);
 }
 
-
-export function logout(user){
-    return axios.get('api/auth/logout', user);
-}
-
-
-export function updateTokens(user){
-    return axios.post('api/auth/update', user);
-}

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Checkbox, Form, Input, Select, Segment, Button, Grid, Header, Message, Divider, Icon} from 'semantic-ui-react';
 import {connect} from 'react-redux';
-import {login} from '../api/user';
+import {login} from '../api/auth';
 import {
     loginSuccess,
     loginUnsuccess

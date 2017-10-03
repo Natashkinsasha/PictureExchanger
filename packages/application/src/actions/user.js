@@ -8,7 +8,6 @@ export function loginSuccess(user, response) {
     };
 }
 
-
 export function loginFailure(response) {
     return {
         type: types.LOGIN_FAILURE,
@@ -36,4 +35,6 @@ export function singUpSuccess(user, response) {
         response,
         user,
     };
-};
+}
+
+

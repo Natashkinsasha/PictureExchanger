@@ -12,12 +12,12 @@ const store = createStore(
         routing: routerReducer,
         userState: userReducer,
     }),
-    load(),
+ //   load(),
     compose(
         applyMiddleware(routerMiddleware(browserHistory)),
         applyMiddleware(reduxThunk),
         applyMiddleware(createLogger()),
-        applyMiddleware(save()),
+        //applyMiddleware(save()),
     ),
 );
 export default store;
