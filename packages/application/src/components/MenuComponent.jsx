@@ -7,7 +7,7 @@ import {
     logout,
 } from '../actions/user';
 
-import {test} from '../api/auth';
+import SocialButtonContainer from './SocialButton.jsx';
 
 
 const AppMenu = (props) => {
@@ -53,7 +53,11 @@ const AuthorizationPanel = ({isAuthorized, onLogin, onSingUp, onLogout}) => {
                 <Button primary onClick={onSingUp}>Sign up</Button>
             </Menu.Item>
             <Menu.Item>
-                <Button onClick={onLogin}>Log-in</Button>
+                <Button.Group>
+                    <SocialButtonContainer/>
+                    <Button.Or/>
+                    <Button onClick={onLogin}>email</Button>
+                </Button.Group>
             </Menu.Item>
         </Menu.Menu>
     );

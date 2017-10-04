@@ -60,3 +60,8 @@ typings/
 .env
 .idea/
 
+
+/packages/application/node_modules/
+/packages/server/node_modules/
+/packages/server/build/
+/node_modules/

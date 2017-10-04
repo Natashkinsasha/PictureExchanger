@@ -5,7 +5,7 @@ import {Router, IndexRedirect, Route, browserHistory, IndexRoute} from 'react-ro
 import store from '../reducers/store';
 import {connect} from 'react-redux';
 import {syncHistoryWithStore} from 'react-router-redux';
-import Menu from './Menu.jsx';
+import Menu from './MenuComponent.jsx';
 import LogIn from './LogIn.jsx';
 import 'semantic-ui-css/semantic.css';
 import VisibleOnlyFor from '../util/auth';

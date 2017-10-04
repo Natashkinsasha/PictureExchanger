@@ -1,12 +1,11 @@
 import React from 'react';
 import {Checkbox, Form, Input, Select, Segment, Button, Grid, Header, Message, Divider} from 'semantic-ui-react';
 import {connect} from 'react-redux';
-import {singUp, loginFacebook} from '../api/auth';
+import {singUp} from '../api/auth';
 import {
     singUpSuccess,
     singUpFailure
 } from '../actions/user';
-import SocialButton from './SocialButton';
 import {push, goBack} from 'react-router-redux';
 
 
@@ -31,15 +30,6 @@ class SignUp extends React.Component {
                 email: user.email,
                 password: user.password,
             })
-            .then(() => {
-                this.setState({formLoading: false});
-            });
-    };
-
-    onFacebookClick = () =>{
-        this.setState({formLoading: true});
-        this.props
-            .onFacebookLogin()
             .then(() => {
                 this.setState({formLoading: false});
             });
@@ -87,7 +77,6 @@ class SignUp extends React.Component {
                                     this.props.goBack();
                                 }}>Назад</Button>
                                 <Divider/>
-                                <SocialButton onFacebookClick = {this.onFacebookClick}/>
                             </Form>
                         </Segment>
                     </Grid.Column>

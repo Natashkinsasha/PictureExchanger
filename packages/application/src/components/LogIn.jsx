@@ -6,7 +6,7 @@ import {
     loginSuccess,
     loginUnsuccess
 } from '../actions/user';
-import SocialButton from './SocialButton';
+import SocialButton from './SocialButton.jsx';
 import {push, goBack} from 'react-router-redux';
 
 
@@ -56,7 +56,7 @@ class LogIn extends React.Component {
                                     this.props.goBack();
                                 }}>Назад</Button>
                                 <Divider/>
-                                <SocialButton/>
+
                             </Form>
                         </Segment>
                     </Grid.Column>
