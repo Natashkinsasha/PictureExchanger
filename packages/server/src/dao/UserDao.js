@@ -9,6 +9,20 @@ export default class UserDAO {
         this.db = db;
     }
 
+    findOrCreateViaFacebook = ({facebook}) => {
+        return db.collection('users')
+            .findOneAndUpdate(
+                {'facebook.id': user.facebook.id},
+                {
+                    update: {
+                        $set: {facebook}
+                    },
+                    new: true,
+                    upsert: true,
+                }
+            )
+    };
+
     create = (user) => {
         return this.db.collection('users')
             .insertOne(user)

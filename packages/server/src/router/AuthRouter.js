@@ -11,6 +11,9 @@ export default class AuthRouter extends Router {
             .post('/login', validateLogin, authController.login)
             .get('/logout', passport.authenticate('jwtr', {session: false}), authController.logout)
             .post('/update', authController.getAccessToken)
+            .get('/facebook', passport.authenticate('facebook'))
+            .get('/auth/facebook/callback', passport.authenticate('facebook'), authController.loginFacebook);
+
     }
 
 }
@@ -26,14 +29,6 @@ function validateRegistry(req, res, next) {
                 errorMessage: errorCodes.INVALID_LENGTH,
             },
         },
-        email: {
-            notEmpty: {
-                errorMessage: errorCodes.REQUIRED,
-            },
-            isEmail: {
-                errorCodes: errorCodes.INVALID_EMAIL,
-            },
-        },
         password: {
             notEmpty: {
                 errorMessage: errorCodes.REQUIRED,
@@ -41,6 +36,14 @@ function validateRegistry(req, res, next) {
             isLength: {
                 options: [{min: 3, max: 15}],
                 errorMessage: errorCodes.INVALID_LENGTH,
+            },
+        },
+        email: {
+            notEmpty: {
+                errorMessage: errorCodes.REQUIRED,
+            },
+            isEmail: {
+                errorMessage: errorCodes.INVALID_EMAIL,
             },
         },
     });

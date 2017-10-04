@@ -2,13 +2,17 @@ import passport from 'passport';
 import passportJWTR from 'passport-jwtr';
 import config from 'node-config-env-value';
 
-const { Strategy: JwtrStrategy, ExtractJwt } = passportJWTR;
+import FacebookUserDTO from '../dto/FacebookUserDTO';
+
+const FacebookStrategy = require('passport-facebook').Strategy;
+
+const {Strategy: JwtrStrategy, ExtractJwt} = passportJWTR;
 
 import AuthenticationError from '../error/AuthenticationError';
 import errorCodes from '../error/errorCodes';
 import JWTUserDTO from '../dto/JWTUserDTO';
 
-export default ({ jwtRedis }) => {
+export default ({jwtRedis, authService}) => {
 
     const header = config.get('jwt.header');
     const opts = {
@@ -21,8 +25,18 @@ export default ({ jwtRedis }) => {
         if (payload.type === 'access') {
             return done(null, new JWTUserDTO(payload));
         }
-        done(new AuthenticationError({ message: 'Token of wrong type', code: errorCodes.AUTHENTICATION_ERROR }));
+        done(new AuthenticationError({message: 'Token of wrong type', code: errorCodes.AUTHENTICATION_ERROR}));
     });
+
+    passport.use(new FacebookStrategy({
+            clientID: config.get('facebook.facebook_app_id'),
+            clientSecret: config.get('facebook.facebook_app_secret'),
+            callbackURL: "http://localhost:3001/auth/facebook/callback"
+        },
+        (accessToken, refreshToken, profile, cb) => {
+            return cb(null, new FacebookUserDTO({accessToken, refreshToken, ...profile}));
+        }
+    ));
 
     return passport;
 

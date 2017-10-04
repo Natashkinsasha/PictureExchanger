@@ -1,10 +1,10 @@
 import React from 'react';
 import {Checkbox, Form, Input, Select, Segment, Button, Grid, Header, Message, Divider} from 'semantic-ui-react';
 import {connect} from 'react-redux';
-import {singUp} from '../api/auth';
+import {singUp, loginFacebook} from '../api/auth';
 import {
     singUpSuccess,
-    singUpUnsuccess
+    singUpFailure
 } from '../actions/user';
 import SocialButton from './SocialButton';
 import {push, goBack} from 'react-router-redux';
@@ -15,9 +15,7 @@ class SignUp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            firstName: "",
-            secondName: "",
-            login: "",
+            nickname: "",
             email: "",
             password: "",
             repeatPassword: "",
@@ -25,12 +23,27 @@ class SignUp extends React.Component {
         }
     }
 
-    signUp = (user) => {
+    onSignUpClick = (user) => {
         this.setState({formLoading: true});
-        this.props.signUp(user).then(() => {
-            this.setState({formLoading: false});
-        });
-    }
+        this.props
+            .onSignUp({
+                nickname: user.nickname,
+                email: user.email,
+                password: user.password,
+            })
+            .then(() => {
+                this.setState({formLoading: false});
+            });
+    };
+
+    onFacebookClick = () =>{
+        this.setState({formLoading: true});
+        this.props
+            .onFacebookLogin()
+            .then(() => {
+                this.setState({formLoading: false});
+            });
+    };
 
     render() {
         return (
@@ -42,19 +55,9 @@ class SignUp extends React.Component {
                                 Регистрация
                             </Header>
                             <Form loading={this.state.formLoading}>
-                                <Form.Input icon='address book' iconPosition='left' label='Имя'
-                                            value={this.state.firstName}
+                                <Form.Input icon='user' iconPosition='left' label='Логин' value={this.state.nickname}
                                             onChange={(e) => {
-                                                this.setState({firstName: e.target.value});
-                                            }}/>
-                                <Form.Input icon='address book outline' iconPosition='left' label='Фамилия'
-                                            value={this.state.firstName}
-                                            onChange={(e) => {
-                                                this.setState({secondName: e.target.value});
-                                            }}/>
-                                <Form.Input icon='user' iconPosition='left' label='Логин' value={this.state.login}
-                                            onChange={(e) => {
-                                                this.setState({login: e.target.value});
+                                                this.setState({nickname: e.target.value});
                                             }}/>
                                 <Form.Input icon='mail outline' iconPosition='left' label='Электронная почта'
                                             value={this.state.email}
@@ -71,7 +74,12 @@ class SignUp extends React.Component {
                                 }}/>
                                 <Button fluid positive onClick={(e) => {
                                     e.preventDefault();
-                                    this.signUp({login: this.state.login, password: this.state.password});
+                                    this.onSignUpClick({
+                                        nickname: this.state.nickname,
+                                        email: this.state.email,
+                                        password: this.state.password,
+                                        repeatPassword: this.state.repeatPassword,
+                                    });
                                 }}>Отправить</Button>
                                 <Divider fitted/>
                                 <Button fluid color='orange' onClick={(e) => {
@@ -79,7 +87,7 @@ class SignUp extends React.Component {
                                     this.props.goBack();
                                 }}>Назад</Button>
                                 <Divider/>
-                                <SocialButton/>
+                                <SocialButton onFacebookClick = {this.onFacebookClick}/>
                             </Form>
                         </Segment>
                     </Grid.Column>
@@ -91,18 +99,31 @@ class SignUp extends React.Component {
 
 export default connect(null, (dispatch) => (
     {
-        signUp: (user) => {
-            return singUp(user).then((response) => {
-                dispatch((dispatch) => {
-                    dispatch(singUpSuccess(response.data, response)).then(() => {
-                        dispatch(push("/"));
-                    })
+        onSignUp: (user) => {
+            return singUp(user)
+                .then((response) => {
+                    const user = response.data.user;
+                    return dispatch(singUpSuccess(user, response))
+                        .then(() => {
+                            return dispatch(push("/"));
+                        });
+                }, (err) => {
+                    return dispatch(singUpFailure(err.response));
                 });
-            }, (response) => {
-                dispatch((dispatch) =>
-                    dispatch(singUpUnsuccess(response))
-                );
-            });
+        },
+        onFacebookLogin: ()=>{
+            return loginFacebook()
+                .then((response) => {
+                    console.log(response)
+                    const user = response.data.user;
+                    return dispatch(singUpSuccess(user, response))
+                        .then(() => {
+                            return dispatch(push("/"));
+                        });
+                }, (err) => {
+                    console.log(err.response)
+                    return dispatch(singUpFailure(err.response));
+                });
         },
         goBack: () => {
             return dispatch(goBack());

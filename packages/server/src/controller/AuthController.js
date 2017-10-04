@@ -4,6 +4,21 @@ export default class AuthController {
         this.authService = authService;
     }
 
+    loginFacebook = (req, res, next) => {
+        const user = req.user;
+        return this.authService
+            .registryOrLoginViaFacebook(user)
+            .then(({user, accessToken, refreshToken}) => {
+                return res.status(200)
+                    .json({
+                        user,
+                        accessToken,
+                        refreshToken,
+                    })
+            })
+            .catch(next);
+    };
+
     registry = (req, res, next) => {
         const {nickname, email, password} = req.body;
         return this.authService

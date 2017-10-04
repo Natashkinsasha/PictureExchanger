@@ -6,6 +6,10 @@ export function login(user){
 }
 
 export function singUp(user){
-    return axios.post('/api/auth/register', user);
+    return axios.post('/api/auth/registry', user);
+}
+
+export function loginFacebook() {
+    return axios.get('/api/auth/facebook');
 }
 

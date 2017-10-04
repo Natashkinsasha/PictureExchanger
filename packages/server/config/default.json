@@ -24,5 +24,9 @@
     "roles": {
       "client": "client"
     }
+  },
+  "facebook": {
+    "facebook_app_id": "456203928064750",
+    "facebook_app_secret": "74727a95a18162c22ba05877b6a36c1f"
   }
 }

@@ -15,6 +15,23 @@ export default class AuthService {
         this.userDao = userDao;
     }
 
+    registryOrLoginViaFacebook = ({facebook}) => {
+        return this.userDao
+            .findOrCreateViaFacebook({facebook})
+            .then()
+            .then((user) => {
+                return this.jwtService
+                    .create(new JWTUserDTO(user))
+                    .then(({accessToken, refreshToken}) => {
+                        return {
+                            user: new ClientUserDTO(user),
+                            accessToken,
+                            refreshToken,
+                        }
+                    })
+            });
+    };
+
     registry = ({nickname, email, password}) => {
         return this.userDao
             .create(new RegistryUserDTO({nickname, email, password}))
@@ -28,7 +45,7 @@ export default class AuthService {
                             refreshToken,
                         }
                     })
-            })
+            });
     };
 
     login = ({nicknameOrEmail, password}) => {
