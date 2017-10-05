@@ -1,13 +1,21 @@
 import React from 'react';
-import {Grid, Image, Divider, Segment, Header, Icon, Input, Button, Statistic} from 'semantic-ui-react'
+import {Grid, Image, Divider, Segment, Header, Icon, Input, Button, Statistic, Dropdown} from 'semantic-ui-react'
 
-const PictureGalleryContainer = () => {
+export default () => {
     return (
         <div>
             <Grid padded columns='16'>
                 <Grid.Row>
                     <Grid.Column mobile={11} tablet={13} computer={14}>
-                        <Input fluid icon='search' placeholder='Search...'/>
+                        <Dropdown placeholder='Search...'
+                                  fluid
+                                  icon='search'
+                                  multiple
+                                  selection
+                                  allowAdditions
+                                  search
+                                  required
+                        />
                     </Grid.Column>
                     <Grid.Column mobile={5} tablet={3} computer={2}>
                         <Button>
@@ -16,17 +24,17 @@ const PictureGalleryContainer = () => {
                     </Grid.Column>
                 </Grid.Row>
                 <Statistic.Group>
-                    <Statistic color='orange' label='orange' />
-                    <Statistic color='yellow' label='yellow' />
-                    <Statistic color='olive' label='olive' />
-                    <Statistic color='green' label='green' />
-                    <Statistic color='teal' label='teal' />
-                    <Statistic color='blue' label='blue' />
-                    <Statistic color='violet' label='violet' />
-                    <Statistic color='purple' label='purple' />
-                    <Statistic color='pink' label='pink' />
-                    <Statistic color='brown' label='brown' />
-                    <Statistic color='grey' label='grey' />
+                    <Statistic color='orange' label='orange'/>
+                    <Statistic color='yellow' label='yellow'/>
+                    <Statistic color='olive' label='olive'/>
+                    <Statistic color='green' label='green'/>
+                    <Statistic color='teal' label='teal'/>
+                    <Statistic color='blue' label='blue'/>
+                    <Statistic color='violet' label='violet'/>
+                    <Statistic color='purple' label='purple'/>
+                    <Statistic color='pink' label='pink'/>
+                    <Statistic color='brown' label='brown'/>
+                    <Statistic color='grey' label='grey'/>
                 </Statistic.Group>
             </Grid>
             <Grid verticalAlign='middle' padded columns='equal'>
@@ -98,6 +106,6 @@ const PictureGalleryContainer = () => {
     )
 };
 
-export default PictureGalleryContainer;
+
 
 

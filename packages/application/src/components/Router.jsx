@@ -5,7 +5,7 @@ import {Router, IndexRedirect, Route, browserHistory, IndexRoute} from 'react-ro
 import store from '../reducers/store';
 import {connect} from 'react-redux';
 import {syncHistoryWithStore} from 'react-router-redux';
-import Menu from './MenuComponent.jsx';
+import Menu from './Menu/Menu.jsx';
 import LogIn from './LogIn.jsx';
 import 'semantic-ui-css/semantic.css';
 import VisibleOnlyFor from '../util/auth';
@@ -13,7 +13,7 @@ import SingUp from './SignUp.jsx';
 
 const history = syncHistoryWithStore(browserHistory, store);
 
-const AppRouter = ({user}) => {
+export default ({user}) => {
 
     return (
         <Router history={history}>
@@ -28,4 +28,4 @@ const AppRouter = ({user}) => {
 };
 
 
-export default AppRouter;
+
