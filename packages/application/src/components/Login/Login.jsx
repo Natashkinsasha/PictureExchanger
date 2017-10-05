@@ -2,7 +2,8 @@ import React from 'react';
 import {Form, Segment, Button, Grid, Header, Divider } from 'semantic-ui-react';
 
 
-export default ({formLoading, onChange, onClickSend, onClickBack}) => {
+export default (props) => {
+    const {user, formLoading, onChange, onClickSend, onClickBack} = props;
     return (
         <Grid container verticalAlign='middle' centered>
             <Grid.Row>
@@ -14,18 +15,18 @@ export default ({formLoading, onChange, onClickSend, onClickBack}) => {
                         <Form loading={formLoading}>
                             <Form.Input icon='user'
                                         iconPosition='left'
-                                        label='Логин'
-                                        value={this.state.login}
+                                        label='Nickname'
+                                        value={user.nickname}
                                         onChange={(e) => {
-                                            onChange({login: e.target.value})
+                                            onChange({nickname: e.target.value})
                                         }}/>
                             <Form.Input icon='lock'
                                         iconPosition='left'
                                         label='Пароль'
                                         type='password'
-                                        value={this.state.password}
+                                        value={user.password}
                                         onChange={(e) => {
-                                            onChange({login: e.target.value})
+                                            onChange({password: e.target.value})
                                         }}/>
                             <Button fluid
                                     positive
@@ -44,7 +45,6 @@ export default ({formLoading, onChange, onClickSend, onClickBack}) => {
                                     }}>
                                 Back
                             </Button>
-                            <Divider/>
                         </Form>
                     </Segment>
                 </Grid.Column>

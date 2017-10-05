@@ -2,26 +2,24 @@ import React from 'react';
 import Home from './Home.jsx';
 import NotFound from './NotFound.jsx';
 import {Router, IndexRedirect, Route, browserHistory, IndexRoute} from 'react-router';
-import store from '../reducers/store';
-import {connect} from 'react-redux';
+import store from '../reducers/store';;
 import {syncHistoryWithStore} from 'react-router-redux';
 import Menu from './Menu/Menu.jsx';
-import LogIn from './LogIn.jsx';
+import Login from './Login/LoginContainer.jsx';
 import 'semantic-ui-css/semantic.css';
-import VisibleOnlyFor from '../util/auth';
-import SingUp from './SignUp.jsx';
+import Registration from './Registration/RegistrationContainer.jsx';
 
 const history = syncHistoryWithStore(browserHistory, store);
 
-export default ({user}) => {
+export default () => {
 
     return (
         <Router history={history}>
             <Route path="/" component={Menu}>
                 <IndexRoute component={Home}/>
             </Route>
-            <Route path="/login" components={LogIn}/>
-            <Route path="/singUp" components={SingUp}/>
+            <Route path="/login" components={Login}/>
+            <Route path="/registration" components={Registration}/>
             <Route path="*" component={NotFound}/>
         </Router>
     )
