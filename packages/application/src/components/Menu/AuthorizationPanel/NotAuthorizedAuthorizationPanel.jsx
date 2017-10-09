@@ -1,11 +1,11 @@
 import React from 'react';
 import {Menu, Button } from 'semantic-ui-react';
 
-export default ({onEmailClick, onSingUprClick, onVKClick, onFacebookClick}) => {
+export default ({onEmailClick, onREGISTRATIONrClick, onVKClick, onFacebookClick}) => {
     return (
         <Menu.Menu position="right">
             <Menu.Item>
-                <Button circular primary onClick={onSingUprClick}>Sign up</Button>
+                <Button circular primary onClick={onREGISTRATIONrClick}>Sign up</Button>
             </Menu.Item>
             <Menu.Item>
                 or enter:

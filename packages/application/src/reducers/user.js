@@ -17,9 +17,9 @@ const userReducer = (state = initialState, action) => {
             return {...state, response: action.response};
         case types.LOGOUT:
             return initialState;
-        case types.SINGUP_SUCCESS:
+        case types.REGISTRATION_SUCCESS:
             return {...state, user: action.user, isAuthorized: true};
-        case types.SINGUP_UNSUCCESS:
+        case types.REGISTRATION_UNSUCCESS:
             return {...state, response: action.response};
     }
     return state;

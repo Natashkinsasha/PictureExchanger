@@ -5,7 +5,7 @@ export function login(user){
     return axios.post('/api/auth/login', user);
 }
 
-export function singUp(user){
+export function REGISTRATION(user){
     return axios.post('/api/auth/registry', user);
 }
 

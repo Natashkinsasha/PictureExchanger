@@ -22,16 +22,16 @@ export function logout() {
     };
 }
 
-export function singUpFailure(response) {
+export function registrationFailure(response) {
     return {
-        type: types.SINGUP_FAILURE,
+        type: types.REGISTRATION_FAILURE,
         response,
     };
 }
 
-export function singUpSuccess(user, response) {
+export function registrationSuccess(user, response) {
     return {
-        type: types.SINGUP_SUCCESS,
+        type: types.REGISTRATION_SUCCESS,
         response,
         user,
     };

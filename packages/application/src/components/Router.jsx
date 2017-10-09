@@ -1,12 +1,14 @@
 import React from 'react';
-import Home from './Home.jsx';
-import NotFound from './NotFound.jsx';
-import {Router, IndexRedirect, Route, browserHistory, IndexRoute} from 'react-router';
-import store from '../reducers/store';;
-import {syncHistoryWithStore} from 'react-router-redux';
-import Menu from './Menu/Menu.jsx';
-import Login from './Login/LoginContainer.jsx';
 import 'semantic-ui-css/semantic.css';
+import {syncHistoryWithStore} from 'react-router-redux';
+import {Router, IndexRedirect, Route, browserHistory, IndexRoute} from 'react-router';
+
+import store from '../reducers/store';
+
+import Menu from './Menu/MenuContainer.jsx';
+import Login from './Login/LoginContainer.jsx';
+import Home from './Home/HomeContainer.jsx';
+import NotFound from './NotFound.jsx';
 import Registration from './Registration/RegistrationContainer.jsx';
 
 const history = syncHistoryWithStore(browserHistory, store);

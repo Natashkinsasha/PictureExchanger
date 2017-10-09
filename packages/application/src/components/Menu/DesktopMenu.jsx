@@ -10,7 +10,7 @@ export default ({...props}) => {
             <Menu.Item header>PictureExchanger</Menu.Item>
             <AuthorizationPanel isAuthorized={props.isAuthorized} onLogin={props.login}
                                 onLogout={props.logout}
-                                onSingUp={props.singUp}
+                                onREGISTRATION={props.REGISTRATION}
             />
         </Menu>
     );
