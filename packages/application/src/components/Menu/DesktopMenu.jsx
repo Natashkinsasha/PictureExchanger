@@ -8,10 +8,7 @@ export default ({...props}) => {
     return (
         <Menu>
             <Menu.Item header>PictureExchanger</Menu.Item>
-            <AuthorizationPanel isAuthorized={props.isAuthorized} onLogin={props.login}
-                                onLogout={props.logout}
-                                onREGISTRATION={props.REGISTRATION}
-            />
+            <AuthorizationPanel {...props}/>
         </Menu>
     );
 };
