@@ -3,7 +3,7 @@ import {Checkbox, Form, Input, Select, Segment, Button, Grid, Header, Message, D
 
 
 export default (props) => {
-    const {user, formLoading, onChange, onSignUpClick, onBackClick, onLoginClick} = props;
+    const {user, formLoading, onChange, onRegistrationClick, onBackClick, onLoginClick} = props;
     return (
         <Grid container verticalAlign='middle' centered>
             <Grid.Row>
@@ -15,7 +15,7 @@ export default (props) => {
                         <Form loading={formLoading}>
                             <Form.Input icon='user'
                                         iconPosition='left'
-                                        label='Login'
+                                        label='Username'
                                         value={user.nickname}
                                         onChange={(e) => {
                                             onChange({nickname: e.target.value});
@@ -47,7 +47,7 @@ export default (props) => {
                                     positive
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        onSignUpClick();
+                                        onRegistrationClick();
                                     }}>Send</Button>
                             <Divider fitted/>
                             <Button fluid

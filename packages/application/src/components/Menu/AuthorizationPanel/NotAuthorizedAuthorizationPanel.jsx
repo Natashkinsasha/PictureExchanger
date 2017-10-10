@@ -11,7 +11,7 @@ export default ({onEmailClick, onRegistrationClick, onVKClick, onFacebookClick})
                 or enter:
             </Menu.Item>
             <Menu.Item>
-                <Button circular onClick={onEmailClick}>Email</Button>
+                <Button circular onClick={onEmailClick}>Login</Button>
                 <Button circular onClick={onVKClick} color='vk' icon='vk'/>
                 <Button circular onClick={onFacebookClick} color='facebook' icon='facebook'/>
             </Menu.Item>

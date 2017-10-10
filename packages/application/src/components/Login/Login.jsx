@@ -1,28 +1,28 @@
 import React from 'react';
-import {Form, Segment, Button, Grid, Header, Divider } from 'semantic-ui-react';
+import {Form, Segment, Button, Grid, Header, Divider} from 'semantic-ui-react';
 
 
 export default (props) => {
-    const {user, formLoading, onChange, onClickSend, onClickBack} = props;
+    const {user, formLoading, onChange, onLoginClick, onBackClick} = props;
     return (
         <Grid container verticalAlign='middle' centered>
             <Grid.Row>
                 <Grid.Column mobile={12} tablet={9} computer={6}>
                     <Segment>
                         <Header as='h2' textAlign='center'>
-                            Войти
+                            Login
                         </Header>
                         <Form loading={formLoading}>
                             <Form.Input icon='user'
                                         iconPosition='left'
-                                        label='Nickname'
-                                        value={user.nickname}
+                                        label='Nickname or email'
+                                        value={user.nicknameOrEmail}
                                         onChange={(e) => {
-                                            onChange({nickname: e.target.value})
+                                            onChange({nicknameOrEmail: e.target.value})
                                         }}/>
                             <Form.Input icon='lock'
                                         iconPosition='left'
-                                        label='Пароль'
+                                        label='Password'
                                         type='password'
                                         value={user.password}
                                         onChange={(e) => {
@@ -32,7 +32,7 @@ export default (props) => {
                                     positive
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        return onClickSend()
+                                        return onLoginClick();
                                     }}>
                                 Send
                             </Button>
@@ -41,7 +41,7 @@ export default (props) => {
                                     color='orange'
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        return onClickBack();
+                                        return onBackClick();
                                     }}>
                                 Back
                             </Button>

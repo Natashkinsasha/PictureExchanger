@@ -33,9 +33,8 @@ class MenuContainer extends React.Component {
 
 
     render = () => {
-        console.log(this)
         return (
-            <Menu {...this}>
+            <Menu {...{...this.props, ...this}}>
                 {this.props.children}
             </Menu>
         )
@@ -53,13 +52,13 @@ export default connect(
     },
     dispatch => ({
         onEmail: () => {
-            dispatch(push('/login'));
+            return dispatch(push('/login'));
         },
         onLogout: () => {
-            dispatch(logout())
+            return dispatch(logout())
         },
         onRegistration: () => {
-            dispatch(push('/registration'))
+            return dispatch(push('/registration'))
         },
     })
 )

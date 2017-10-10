@@ -21,6 +21,9 @@ export default class UserDAO {
                     upsert: true,
                 }
             )
+            .then((user) => {
+                return user && new UserDTO(user);
+            });
     };
 
     create = (user) => {
@@ -35,7 +38,7 @@ export default class UserDAO {
         return this.db.collection('users', {promoteBuffers: true})
             .findOne({email})
             .then((user) => {
-                return new UserDTO(user);
+                return user && new UserDTO(user);
             });
     };
 
@@ -43,7 +46,7 @@ export default class UserDAO {
         return this.db.collection('users', {promoteBuffers: true})
             .findOne({nickname})
             .then((user) => {
-                return new UserDTO(user);
+                return user && new UserDTO(user);
             });
     };
 }

@@ -7,7 +7,7 @@ import {browserHistory} from 'react-router';
 import {save, load} from "redux-localstorage-simple";
 
 
-const store = createStore(
+export default createStore(
     combineReducers({
         routing: routerReducer,
         userState: userReducer,
@@ -21,4 +21,4 @@ const store = createStore(
     ),
 );
 
-export default store;
+

@@ -4,6 +4,7 @@ const config = require('node-config-env-value');
 
 const port = config.get('server.port');
 const NODE_ENV = config.get('NODE_ENV');
+
 module.exports = {
 
     entry: path.join(__dirname, 'src/main.js'),
