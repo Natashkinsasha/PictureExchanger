@@ -87,17 +87,17 @@ export default () => {
 
                 <Grid.Column verticalAlign='middle' mobile={16} tablet={8} computer={4}>
                     <Image bordered
-                           src='http://img.amur.info/crop/misc/2017-01-25/660x_/ccbc28832143a809a47967be2a184c32.jpg'/>
+                           src='http://жизнь-спб.рф/wp-content/uploads/2015/10/ermiki1.jpg'/>
                 </Grid.Column>
 
                 <Grid.Column verticalAlign='middle' mobile={16} tablet={8} computer={4}>
                     <Image bordered
-                           src='http://img.amur.info/crop/misc/2017-01-25/660x_/ccbc28832143a809a47967be2a184c32.jpg'/>
+                           src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPz1w7SgwkyaauIj4PJEhyZ2TfkGhRk2xBS9Qi-mK5yud-qwnSTg'/>
                 </Grid.Column>
 
                 <Grid.Column verticalAlign='middle' mobile={16} tablet={8} computer={4}>
                     <Image bordered
-                           src='http://img.amur.info/crop/misc/2017-01-25/660x_/ccbc28832143a809a47967be2a184c32.jpg'/>
+                           src='https://www.zootovary.com/userfiles/453_4.jpg'/>
                 </Grid.Column>
 
             </Grid>

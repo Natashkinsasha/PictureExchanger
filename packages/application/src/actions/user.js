@@ -1,6 +1,6 @@
 import * as types from '../actions/types';
 import authApi from '../api/auth'
-import {push} from 'react-router-redux';
+import {routerActions} from 'react-router-redux';
 
 
 export function login({nicknameOrEmail, password}) {
@@ -14,7 +14,7 @@ export function login({nicknameOrEmail, password}) {
                 (response) => {
                     const user = response.data.user;
                     dispatch(loginSuccess(user, response));
-                    return dispatch(push('/'));
+                    return dispatch(routerActions.push('/'));
 
                 },
                 (err) => {
@@ -58,7 +58,8 @@ export function registration({nickname, email, password}) {
             .then(
                 (response) => {
                     const user = response.data.user;
-                    return dispatch(registrationSuccess(user, response))
+                    dispatch(registrationSuccess(user, response));
+                    return dispatch(routerActions.push('/'));
                 },
                 (err) => {
                     return dispatch(registrationFailure(err.response))

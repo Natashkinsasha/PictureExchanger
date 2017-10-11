@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const config = require('node-config-env-value');
 
-const port = config.get('server.port');
+const port = config.get('SERVER.PORT');
 const NODE_ENV = config.get('NODE_ENV');
 
 module.exports = {
@@ -31,7 +31,7 @@ module.exports = {
             },
             {
                 test: /\.jsx$/,
-                loader: "react-hot-loader!babel-loader",
+                loader: "babel-loader",
                 exclude: [/node_modules/, /public/],
             },
             {

@@ -1,6 +1,6 @@
 import {createStore, combineReducers, compose, applyMiddleware} from 'redux'
 import reduxThunk from 'redux-thunk'
-import createLogger from 'redux-logger'
+import { createLogger }  from 'redux-logger'
 import userReducer from '../reducers/user';
 import {routerReducer, routerMiddleware} from 'react-router-redux';
 import {browserHistory} from 'react-router';
@@ -14,9 +14,9 @@ export default createStore(
     }),
  //   load(),
     compose(
-        applyMiddleware(routerMiddleware(browserHistory)),
-        applyMiddleware(reduxThunk),
         applyMiddleware(createLogger()),
+        applyMiddleware(reduxThunk),
+        applyMiddleware(routerMiddleware(browserHistory)),
         //applyMiddleware(save()),
     ),
 );

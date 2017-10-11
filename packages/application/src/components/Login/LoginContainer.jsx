@@ -1,7 +1,7 @@
 import React from 'react';
 import Promise from "bluebird";
 import {connect} from 'react-redux';
-import {push} from 'react-router-redux';
+import {routerActions} from 'react-router-redux';
 
 
 import Login from './Login.jsx';
@@ -57,13 +57,13 @@ export default connect(
     undefined,
     (dispatch) => ({
         onBack: () => {
-            return dispatch(push('/'));
+            return dispatch(routerActions.push('/'));
         },
         onLogin: ({nicknameOrEmail, password}) => {
             return dispatch(login({nicknameOrEmail, password}));
         },
         onHome: () => {
-            return dispatch(push('/'));
+            return dispatch(routerActions.push('/'));
         },
     })
 )
