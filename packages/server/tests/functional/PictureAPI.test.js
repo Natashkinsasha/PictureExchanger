@@ -9,7 +9,7 @@ chai.use(dirtyChai);
 chai.use(chaiHttp);
 const {expect} = chai;
 
-const serverURL = `http://localhost:${3000}`;
+const serverURL = `http://localhost:${3001}`;
 
 describe('Test picture API', () => {
 
@@ -131,6 +131,22 @@ describe('Test picture API', () => {
                 .catch((err)=>{
                     done(err);
                 })
+        });
+
+    });
+
+    describe('#GET /api/picture/tags/popular', ()=>{
+
+        it('should get most popular tags', (done)=>{
+            chai
+                .request(serverURL)
+                .get('/api/picture/tags/popular')
+                .then((res)=>{
+                    expect(res).to.have.status(200);
+                    expect(res.body).be.a('array');
+                    done();
+                })
+                .catch(done);
         });
 
     });

@@ -15,16 +15,17 @@ export default class PictureController {
     };
 
     find = (req, res, next) => {
-        const {name, onlyMy, tags, sortBy, page, count} = req.query;
-        return this.pictureService.find({name, onlyMy, tags, sortBy, page, count})
+        const {name, tags, sortBy, page, count, onlyMy} = req.query;
+        const owner = req.user.id;
+        return this.pictureService.find({name, onlyMy, tags, sortBy, page, count, owner})
             .then((pictures) => {
                 return res.status(200).json(pictures);
             })
             .catch(next);
     };
 
-    getPopularTags = () => {
-        const {count} = req.query;
+    getPopularTags = (req, res, next) => {
+        const {count} = req.query || 10;
         return this.pictureService.getPopularTags({count})
             .then((tags) => {
                 return res.status(200).json(tags);
