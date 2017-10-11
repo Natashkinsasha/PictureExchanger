@@ -1,12 +1,12 @@
 import React from 'react';
 import Promise from "bluebird";
 import {connect} from 'react-redux';
-import {goBack, push} from 'react-router-redux';
+import {push} from 'react-router-redux';
 
 
 import Login from './Login.jsx';
-import {loginSuccess, loginFailure} from '../../actions/user';
-import {login} from '../../api/auth'
+import {login} from '../../actions/user';
+
 
 class LoginContainer extends React.Component {
 
@@ -57,26 +57,10 @@ export default connect(
     undefined,
     (dispatch) => ({
         onBack: () => {
-            return dispatch(goBack());
+            return dispatch(push('/'));
         },
         onLogin: ({nicknameOrEmail, password}) => {
-            return dispatch((dispatch) => {
-                return login({nicknameOrEmail, password})
-                    .then(
-                        (response) => {
-                            const user = response.data.user;
-                            return Promise
-                                .method(dispatch)(loginSuccess(user, response))
-                                .then(()=>{
-                                    return dispatch(push('/'));
-                                })
-                        },
-                        (err) => {
-                            return dispatch(loginFailure(err.response))
-                        }
-                    );
-            });
-
+            return dispatch(login({nicknameOrEmail, password}));
         },
         onHome: () => {
             return dispatch(push('/'));

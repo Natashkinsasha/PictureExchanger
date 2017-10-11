@@ -1,15 +1,20 @@
 import axios from 'axios'
 
 
-export function login({nicknameOrEmail, password}){
+function login({nicknameOrEmail, password}){
     return axios.post('/api/auth/login', {nicknameOrEmail, password})
 }
 
-export function registration({nickname, email, password}){
+function registration({nickname, email, password}){
     return axios.post('/api/auth/registry', {nickname, email, password});
 }
 
-export function loginFacebook() {
+function loginFacebook() {
     return axios.get('/api/auth/facebook');
 }
 
+export default {
+    login,
+    registration,
+    loginFacebook
+}

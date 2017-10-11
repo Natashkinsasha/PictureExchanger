@@ -4,8 +4,8 @@ import {connect} from 'react-redux';
 import {goBack, push} from 'react-router-redux';
 
 import Registration from './Registration.jsx';
-import {registrationSuccess, loginFailure, registrationFailure} from '../../actions/user';
-import {registration} from '../../api/auth'
+import {registration} from '../../actions/user';
+
 
 class RegistrationContainer extends React.Component {
 
@@ -63,26 +63,20 @@ class RegistrationContainer extends React.Component {
 export default connect(
     undefined,
     (dispatch) => ({
-        onRegistration: ({nickname, email, password}) => {
-            return dispatch((dispatch) => {
-                return registration({nickname, email, password})
-                    .then(
-                        (response) => {
-                            const user = response.data.user;
-                            return dispatch(registrationSuccess(user, response))
-                        },
-                        (err) => {
-                            return dispatch(registrationFailure(err.response))
-                        }
-                    );
-            });
-
+        onRegistration: ({nickname, email, password,}) => {
+            return dispatch(
+                registration({
+                    nickname,
+                    email,
+                    password,
+                })
+            );
         },
         onLogin: () => {
             return dispatch(push('/login'));
         },
         onBack: () => {
-            return dispatch(goBack());
+            return dispatch(push('/'));
         },
     })
 )
