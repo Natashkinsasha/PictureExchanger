@@ -4,13 +4,14 @@ import config from 'node-config-env-value';
 
 import FacebookUserDTO from '../dto/FacebookUserDTO';
 
-const FacebookStrategy = require('passport-facebook').Strategy;
-
-const {Strategy: JwtrStrategy, ExtractJwt} = passportJWTR;
 
 import AuthenticationError from '../error/AuthenticationError';
 import errorCodes from '../error/errorCodes';
 import JWTUserDTO from '../dto/JWTUserDTO';
+
+const FacebookStrategy = require('passport-facebook').Strategy;
+
+const {Strategy: JwtrStrategy, ExtractJwt} = passportJWTR;
 
 export default ({jwtRedis, authService}) => {
 
@@ -21,12 +22,12 @@ export default ({jwtRedis, authService}) => {
         jwtr: jwtRedis,
     };
 
-    passport.use(new JwtrStrategy(opts), (payload, done) => {
+    passport.use(new JwtrStrategy(opts, (payload, done) => {
         if (payload.type === 'access') {
             return done(null, new JWTUserDTO(payload));
         }
         done(new AuthenticationError({message: 'Token of wrong type', code: errorCodes.AUTHENTICATION_ERROR}));
-    });
+    }));
 
     passport.use(new FacebookStrategy({
             clientID: config.get('facebook.facebook_app_id'),

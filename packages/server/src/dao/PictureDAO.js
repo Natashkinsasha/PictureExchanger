@@ -1,5 +1,6 @@
 import PictureDTO from '../dto/PictureDTO';
-
+import TagDTO from '../dto/TagDTO';
+import mongodb from 'mongodb';
 
 //TODO Добавить индексы
 //TODO Добавить валидацию
@@ -25,7 +26,7 @@ export default class PictureDAO {
 
     };
 
-    find = ({owner, onlyMy = false, sortBy = 'uploadDate', page = 1, count = 10, tags, name}) => {
+    find = ({user_id, onlyMy = false, sortBy = 'uploadDate', page = 1, count = 10, tags, name}) => {
         const limit = count;
         const skip = count * (page - 1);
         let query = {};
@@ -37,10 +38,10 @@ export default class PictureDAO {
             query = {...query, name};
         }
         if (onlyMy) {
-            query = {...query, owner: new mongodb.ObjectID(owner)}
+            query = {...query, user_id: new mongodb.ObjectID(user_id)}
         }
-        if (!onlyMy && owner) {
-            query = {...query, $or: [{owner: new mongodb.ObjectID(owner)}, {isPrivate: false}]}
+        if (!onlyMy) {
+            query = {...query, $or: [{user_id: new mongodb.ObjectID(user_id)}, {isPrivate: false}]}
         }
         return this.db.collection('pictures')
             .find(query)
@@ -56,13 +57,12 @@ export default class PictureDAO {
     getPopularTags = ({count = 10}) => {
         return this.db.collection('pictures')
             .aggregate(
-                {$unwind: "$tags"},
-                {
-                    $group: {_id: "$tags", score: {"$sum": 1}},
-                },
+                [{$unwind: "$tags"}, {$sortByCount: "$tags"}, {$limit: count}]
             )
             .toArray()
-            .tap(console.log)
+            .map((tag) => {
+                return new TagDTO(tag);
+            })
     };
 
 }

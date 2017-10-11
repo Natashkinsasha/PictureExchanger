@@ -13,7 +13,7 @@ const serverURL = `http://localhost:${3001}`;
 
 describe('Test picture API', () => {
 
-    afterEach((done) => {
+    beforeEach((done) => {
         Promise
             .all([
                 chai
@@ -71,10 +71,10 @@ describe('Test picture API', () => {
                     expect(res.body).to.have.property('likes', 0).be.a('number');
                     expect(res.body).to.have.property('isPrivate', true).be.a('boolean');
                     expect(res.body).to.have.property('uploadDate').be.a('string');
-                    expect(res.body).to.have.property('owner').be.a('string');
+                    expect(res.body).to.have.property('user_id').be.a('string');
                     done();
                 })
-                .catch((err)=>{
+                .catch((err) => {
                     done(err);
                 })
         });
@@ -105,7 +105,7 @@ describe('Test picture API', () => {
                         .field('description', JSON.stringify(description))
                         .field('isPrivate', JSON.stringify(true))
                         .attach('picture', fs.readFileSync('./packages/server/tests/functional/pictures/cat.jpg'), 'cat.jpg')
-                        .then(()=>{
+                        .then(() => {
                             return chai
                                 .request(serverURL)
                                 .get('/api/picture')
@@ -125,30 +125,109 @@ describe('Test picture API', () => {
                     expect(res.body[0]).to.have.property('likes', 0).be.a('number');
                     expect(res.body[0]).to.have.property('isPrivate', true).be.a('boolean');
                     expect(res.body[0]).to.have.property('uploadDate').be.a('string');
-                    expect(res.body[0]).to.have.property('owner').be.a('string');
+                    expect(res.body[0]).to.have.property('user_id').be.a('string');
                     done();
                 })
-                .catch((err)=>{
+                .catch((err) => {
                     done(err);
                 })
         });
 
     });
 
-    describe('#GET /api/picture/tags/popular', ()=>{
+    describe('#GET /api/picture/tags/popular', () => {
 
-        it('should get most popular tags', (done)=>{
+        it('should get most popular tags', (done) => {
+            const nickname = shortid.generate();
+            const email = shortid.generate() + '@gmail.com';
+            const password = shortid.generate();
+            const firstTag = shortid.generate();
+            const secondTag = shortid.generate();
+            const thirdTag = shortid.generate();
+            const fourthTag = shortid.generate();
             chai
                 .request(serverURL)
-                .get('/api/picture/tags/popular')
-                .then((res)=>{
+                .post('/api/auth/registry')
+                .send({nickname, email, password})
+                .then((res) => {
+                    return Promise
+                        .all([
+                            savePicture({accessToken: res.body.accessToken, tags: [firstTag]}),
+                            savePicture({accessToken: res.body.accessToken, tags: [firstTag, secondTag]}),
+                            savePicture({accessToken: res.body.accessToken, tags: [secondTag, thirdTag]}),
+                            savePicture({accessToken: res.body.accessToken, tags: [fourthTag, firstTag]}),
+                            savePicture({accessToken: res.body.accessToken, tags: [fourthTag]}),
+                        ]);
+                })
+                .then((res) => {
+                    return chai
+                        .request(serverURL)
+                        .get('/api/picture/tags/popular')
+                })
+                .then((res) => {
                     expect(res).to.have.status(200);
-                    expect(res.body).be.a('array');
+                    expect(res.body).to.be.a('array').have.lengthOf(4);
+                    expect(res.body).to.deep.include({ name: firstTag, count: 3 });
+                    expect(res.body).to.deep.include({ name: secondTag, count: 2 });
+                    expect(res.body).to.deep.include({ name: fourthTag, count: 2 });
+                    expect(res.body).to.deep.include({ name: thirdTag, count: 1 });
                     done();
                 })
-                .catch(done);
+                .catch((err) => {
+                    done(err);
+                })
         });
 
+        it('should get 2 most popular tags', (done) => {
+            const nickname = shortid.generate();
+            const email = shortid.generate() + '@gmail.com';
+            const password = shortid.generate();
+            const firstTag = shortid.generate();
+            const secondTag = shortid.generate();
+            const thirdTag = shortid.generate();
+            const fourthTag = shortid.generate();
+            chai
+                .request(serverURL)
+                .post('/api/auth/registry')
+                .send({nickname, email, password})
+                .then((res) => {
+                    return Promise
+                        .all([
+                            savePicture({accessToken: res.body.accessToken, tags: [firstTag]}),
+                            savePicture({accessToken: res.body.accessToken, tags: [firstTag, secondTag]}),
+                            savePicture({accessToken: res.body.accessToken, tags: [secondTag, thirdTag]}),
+                            savePicture({accessToken: res.body.accessToken, tags: [firstTag]}),
+                            savePicture({accessToken: res.body.accessToken, tags: [fourthTag]}),
+                        ]);
+                })
+                .then((res) => {
+                    return chai
+                        .request(serverURL)
+                        .get('/api/picture/tags/popular')
+                        .query({count: 2})
+                })
+                .then((res) => {
+                    expect(res).to.have.status(200);
+                    expect(res.body).to.be.a('array').have.lengthOf(2);
+                    expect(res.body).to.deep.include({ name: firstTag, count: 3 });
+                    expect(res.body).to.deep.include({ name: secondTag, count: 2 });
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                })
+        });
     });
 
+    function savePicture({accessToken, name = shortid.generate(), tags = [shortid.generate()], description = shortid.generate()}) {
+        return chai
+            .request(serverURL)
+            .post('/api/picture/save')
+            .set('authorization', accessToken)
+            .field('name', JSON.stringify(name))
+            .field('tags', JSON.stringify(tags))
+            .field('description', JSON.stringify(description))
+            .field('isPrivate', JSON.stringify(true))
+            .attach('picture', fs.readFileSync('./packages/server/tests/functional/pictures/cat.jpg'), 'cat.jpg')
+    }
 });

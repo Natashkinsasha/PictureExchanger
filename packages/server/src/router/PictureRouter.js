@@ -10,10 +10,9 @@ export default class PictureRouter extends Router{
     constructor({pictureController, passport}){
         super();
         return this
-            .get('/', queryParser(),  pictureController.find)
-            .get('/with-auth', queryParser(), passport.authenticate('jwtr', {session: false}), pictureController.find)
+            .get('/', queryParser(), passport.authenticate('jwtr', {session: false}), pictureController.find)
             .post('/save', passport.authenticate('jwtr', {session: false}), multiparty(), validateSave, pictureController.save)
-            .get('/tags/popular', pictureController.getPopularTags)
+            .get('/tags/popular', queryParser(), pictureController.getPopularTags)
     }
 
 }
