@@ -38,16 +38,10 @@ describe('Test picture API', () => {
     describe('#POST /api/picture/save', () => {
 
         it('should save image', (done) => {
-            const nickname = shortid.generate();
-            const email = shortid.generate() + '@gmail.com';
-            const password = shortid.generate();
             const name = shortid.generate();
             const tag = shortid.generate();
             const description = shortid.generate();
-            chai
-                .request(serverURL)
-                .post('/api/auth/registry')
-                .send({nickname, email, password})
+            registry({})
                 .then((res) => {
                     return chai
                         .request(serverURL)
@@ -85,16 +79,10 @@ describe('Test picture API', () => {
     describe('#GET /api/picture', () => {
 
         it('should find picture', (done) => {
-            const nickname = shortid.generate();
-            const email = shortid.generate() + '@gmail.com';
-            const password = shortid.generate();
             const name = shortid.generate();
             const tag = shortid.generate();
             const description = shortid.generate();
-            chai
-                .request(serverURL)
-                .post('/api/auth/registry')
-                .send({nickname, email, password})
+            registry({})
                 .then((res) => {
                     return chai
                         .request(serverURL)
@@ -138,17 +126,11 @@ describe('Test picture API', () => {
     describe('#GET /api/picture/tags/popular', () => {
 
         it('should get most popular tags', (done) => {
-            const nickname = shortid.generate();
-            const email = shortid.generate() + '@gmail.com';
-            const password = shortid.generate();
             const firstTag = shortid.generate();
             const secondTag = shortid.generate();
             const thirdTag = shortid.generate();
             const fourthTag = shortid.generate();
-            chai
-                .request(serverURL)
-                .post('/api/auth/registry')
-                .send({nickname, email, password})
+            registry({})
                 .then((res) => {
                     return Promise
                         .all([
@@ -167,10 +149,10 @@ describe('Test picture API', () => {
                 .then((res) => {
                     expect(res).to.have.status(200);
                     expect(res.body).to.be.a('array').have.lengthOf(4);
-                    expect(res.body).to.deep.include({ name: firstTag, count: 3 });
-                    expect(res.body).to.deep.include({ name: secondTag, count: 2 });
-                    expect(res.body).to.deep.include({ name: fourthTag, count: 2 });
-                    expect(res.body).to.deep.include({ name: thirdTag, count: 1 });
+                    expect(res.body).to.deep.include({name: firstTag, count: 3});
+                    expect(res.body).to.deep.include({name: secondTag, count: 2});
+                    expect(res.body).to.deep.include({name: fourthTag, count: 2});
+                    expect(res.body).to.deep.include({name: thirdTag, count: 1});
                     done();
                 })
                 .catch((err) => {
@@ -179,17 +161,11 @@ describe('Test picture API', () => {
         });
 
         it('should get 2 most popular tags', (done) => {
-            const nickname = shortid.generate();
-            const email = shortid.generate() + '@gmail.com';
-            const password = shortid.generate();
             const firstTag = shortid.generate();
             const secondTag = shortid.generate();
             const thirdTag = shortid.generate();
             const fourthTag = shortid.generate();
-            chai
-                .request(serverURL)
-                .post('/api/auth/registry')
-                .send({nickname, email, password})
+            registry({})
                 .then((res) => {
                     return Promise
                         .all([
@@ -209,8 +185,8 @@ describe('Test picture API', () => {
                 .then((res) => {
                     expect(res).to.have.status(200);
                     expect(res.body).to.be.a('array').have.lengthOf(2);
-                    expect(res.body).to.deep.include({ name: firstTag, count: 3 });
-                    expect(res.body).to.deep.include({ name: secondTag, count: 2 });
+                    expect(res.body).to.deep.include({name: firstTag, count: 3});
+                    expect(res.body).to.deep.include({name: secondTag, count: 2});
                     done();
                 })
                 .catch((err) => {
@@ -218,6 +194,14 @@ describe('Test picture API', () => {
                 })
         });
     });
+
+
+    function registry({nickname = shortid.generate(), email = shortid.generate() + '@gmail.com', password = shortid.generate()}) {
+        return chai
+            .request(serverURL)
+            .post('/api/auth/registry')
+            .send({nickname, email, password})
+    }
 
     function savePicture({accessToken, name = shortid.generate(), tags = [shortid.generate()], description = shortid.generate()}) {
         return chai

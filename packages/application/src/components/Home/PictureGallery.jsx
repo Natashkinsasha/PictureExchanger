@@ -1,7 +1,25 @@
 import React from 'react';
 import {Grid, Image, Divider, Segment, Header, Icon, Input, Button, Statistic, Dropdown} from 'semantic-ui-react'
+import {connect} from 'react-redux';
+import {addTag} from '../../actions/pictures';
 
-export default () => {
+export default connect(
+    (store) => ({
+        pictures: store.picturesState.pictures,
+        popularTagsOptions: store.picturesState.popularTags.map((tag) => {
+            return {key: tag.name, text: tag.name, value: tag.name}
+        }),
+    }),
+    (dispatch) => ({
+        addTag: (tag) => {
+            return dispatch(addTag(tag));
+        },
+    })
+)
+((props) => {
+    console.log(props);
+    const {popularTagsOptions, addTag} = props;
+
     return (
         <div>
             <Grid padded columns='16'>
@@ -15,6 +33,10 @@ export default () => {
                                   allowAdditions
                                   search
                                   required
+                                  onAddItem={(e, {value}) => {
+                                      addTag({name: value});
+                                  }}
+                                  options={popularTagsOptions}
                         />
                     </Grid.Column>
                     <Grid.Column mobile={5} tablet={3} computer={2}>
@@ -23,19 +45,6 @@ export default () => {
                         </Button>
                     </Grid.Column>
                 </Grid.Row>
-                <Statistic.Group>
-                    <Statistic color='orange' label='orange'/>
-                    <Statistic color='yellow' label='yellow'/>
-                    <Statistic color='olive' label='olive'/>
-                    <Statistic color='green' label='green'/>
-                    <Statistic color='teal' label='teal'/>
-                    <Statistic color='blue' label='blue'/>
-                    <Statistic color='violet' label='violet'/>
-                    <Statistic color='purple' label='purple'/>
-                    <Statistic color='pink' label='pink'/>
-                    <Statistic color='brown' label='brown'/>
-                    <Statistic color='grey' label='grey'/>
-                </Statistic.Group>
             </Grid>
             <Grid padded columns='equal'>
 
@@ -106,7 +115,7 @@ export default () => {
         </div>
 
     )
-};
+});
 
 
 

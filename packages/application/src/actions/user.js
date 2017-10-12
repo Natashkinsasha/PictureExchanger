@@ -41,11 +41,36 @@ function loginFailure(response) {
 
 
 export function logout() {
-    return {
-        type: types.LOGOUT,
+    return (dispatch) => {
+        return authApi
+            .logout()
+            .then(
+                (response) => {
+                    const user = response.data.user;
+                    dispatch(logoutSuccess(response));
+                    return dispatch(routerActions.push('/'));
+                },
+                (err) => {
+                    return dispatch(logoutFailure(err.response))
+                }
+            );
     };
 }
 
+
+function logoutSuccess(response) {
+    return {
+        type: types.LOGOUT_SUCCESS,
+        response,
+    };
+}
+
+function logoutFailure(response) {
+    return {
+        type: types.LOGIN_FAILURE,
+        response,
+    };
+}
 
 export function registration({nickname, email, password}) {
     return (dispatch) => {

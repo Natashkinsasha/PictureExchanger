@@ -4,9 +4,9 @@ import {connect} from 'react-redux';
 import PictureGallery from './PictureGallery.jsx';
 
 
-const Home = () => {
+const Home = (props) => {
     return (
-        <PictureGallery/>
+        <PictureGallery {...props}/>
     );
 };
 
